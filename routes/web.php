@@ -13,4 +13,5 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('logout/', [AuthController::class, 'destroy'])->name('logout');
 
     Route::get('/post', [PostController::class, 'index'])->name('post.index');
+    Route::post('/post', [PostController::class, 'store'])->name('post.store');
 });
