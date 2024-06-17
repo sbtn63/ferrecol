@@ -4,6 +4,8 @@
 
 @section('content')
 
+@include('layouts._partials.messages')
+
 <h1>Posts</h1>
 
 <p>User : {{ '@'.Auth::user()->username }}</p>
@@ -49,6 +51,14 @@
         <p>{{ $post->content }}</p>
         <p>{{ '@'.$post->user->username }}</p>
         <p>{{ $post->train_station->name }}</p>
+        @if ($post->user_id == Auth::user()->id)
+            <a href="{{ route('post.edit', $post->id) }}">Actualizar</a>
+            <form action="{{ route('post.destroy', $post->id) }}" method="post">
+                @csrf
+                @method('DELETE')
+                <button type="submit">Eliminar</button>
+            </form>
+        @endif
     </div>
 @empty
     <p>No existen posts</p>
