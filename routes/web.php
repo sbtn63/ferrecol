@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\CommentController;
+use App\Http\Controllers\UserController;
 
 Route::get('/', [AuthController::class, 'login'])->name('login');
 Route::post('/', [AuthController::class, 'auth'])->name('auth');
@@ -20,4 +21,6 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::delete('/post/{id}', [PostController::class, 'destroy'])->name('post.destroy');
 
     Route::post('/comment', [CommentController::class, 'store'])->name('comment.store');
+
+    Route::get('profile/{id}', [UserController::class, 'show'])->name('user.show');
 });

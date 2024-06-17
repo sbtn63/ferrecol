@@ -5,13 +5,14 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Post;
 use App\Models\TrainStation;
+use Illuminate\Support\Str;
 use Auth;
 
 class PostController extends Controller
 {
     public function index()
     {
-        $posts = Post::all();
+        $posts = Post::orderByDesc('created_at')->get();
         $train_stations = TrainStation::all();
         return view('post.index', compact('posts', 'train_stations'));
     }
@@ -39,8 +40,22 @@ class PostController extends Controller
             $post->train_station_id = $request->train_station;
             $post->save();
 
-            return redirect()->route('post.index')
-                ->with('success', 'Publicacion creada!');
+            $redirectTo = redirect()->intended(route('post.index'));
+
+        // Verificar si hay un referer (página anterior)
+            $referer = $request->headers->get('referer');
+            if ($referer) {
+                // Extraer la ruta desde el referer
+                $refererPath = parse_url($referer, PHP_URL_PATH);
+
+                // Verificar si el referer es la ruta de user.show
+                if (Str::contains($refererPath, 'user.show')) {
+                    $redirectTo = redirect()->intended($referer);
+                }
+            }
+
+            return $redirectTo->with('success', 'Publicacion creada!');
+
         } catch (\Exception $e) {
             return redirect()->route('post.index')
                 ->with('error', 'Error al crear la Publicacion!');

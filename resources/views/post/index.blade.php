@@ -49,12 +49,12 @@
     <hr>
     <div>
         <h5>Titulo: {{ $post->title }}</h5>
-        <p><strong>Usuario:</strong> {{ '@'.$post->user->username }}</p>
+        <p><strong>Usuario:</strong> <a href="{{ route('user.show', $post->user->id) }}">{{ '@'.$post->user->username }}</a></p>
         <p><strong>Creado: </strong>{{ $post->created_at_for_humans }}</p>
         <p><strong>Contenido:</strong> {{ $post->content }}</p>
         <p><strong>Estacion: </strong>{{ $post->train_station->name }}</p>
         <p><strong>Municipio: </strong>{{ $post->train_station->municipality->name }}</p>
-        <p><strong>Departamento</strong>{{ $post->train_station->municipality->departament->name }}</p>
+        <p><strong>Departamento: </strong>{{ $post->train_station->municipality->departament->name }}</p>
         @if ($post->user_id == Auth::user()->id)
             <div style="display:flex;gap:4em;">
             <a href="{{ route('post.edit', $post->id) }}">Actualizar</a>
