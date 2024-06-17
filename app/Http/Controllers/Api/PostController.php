@@ -28,13 +28,11 @@ class PostController extends Controller
     public function show(int $id)
     {
         try {
-            $post = Post::find($id);
+            $post = Post::with(['user', 'train_station.municipality', 'comments.user'])->find($id);
 
-            if(!$post){
+            if (!$post) {
                 return $this->error(404, 'La Publicacion no existe!');
             }
-
-            $post = Post::with(['user', 'train_station.municipality', 'comments.user'])->orderByDesc('created_at')->first();
 
             $post = new PostResource($post);
             return $this->success(200, 'Publicacion', $post);
