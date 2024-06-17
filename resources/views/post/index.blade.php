@@ -46,19 +46,48 @@
 </form>
 
 @forelse ($posts as $post)
+    <hr>
     <div>
-        <h5>{{ $post->title }}</h5>
-        <p>{{ $post->content }}</p>
-        <p>{{ '@'.$post->user->username }}</p>
-        <p>{{ $post->train_station->name }}</p>
+        <h5>Titulo: {{ $post->title }}</h5>
+        <p><strong>Usuario:</strong> {{ '@'.$post->user->username }}</p>
+        <p><strong>Creado: </strong>{{ $post->created_at_for_humans }}</p>
+        <p><strong>Contenido:</strong> {{ $post->content }}</p>
+        <p><strong>Estacion: </strong>{{ $post->train_station->name }}</p>
         @if ($post->user_id == Auth::user()->id)
+            <div style="display:flex;gap:4em;">
             <a href="{{ route('post.edit', $post->id) }}">Actualizar</a>
             <form action="{{ route('post.destroy', $post->id) }}" method="post">
                 @csrf
                 @method('DELETE')
                 <button type="submit">Eliminar</button>
             </form>
+            </div>
         @endif
+
+        <div style="margin-top:10px;">
+            <h5>Comentarios - ( {{ $post->comments->count() }} )</h5>
+            <form style="display:flex;gap:1em;" action="{{ route('comment.store') }}" method="post">
+                @csrf
+    
+                <div>
+                    <input type="number" hidden name="post" value="{{ $post->id }}">
+                </div>
+                <div>
+                    <input name="content" type="text">
+                </div>
+
+                <button type="submit">Comentar</button>
+            </form>
+            <ul>
+                @foreach ($post->comments as $comment )
+                <li>
+                    {{ '@'.$comment->user->username }} - {{ $comment->content }}
+                </li>
+                @endforeach
+            </ul>
+        </div>
+        <hr>
+
     </div>
 @empty
     <p>No existen posts</p>

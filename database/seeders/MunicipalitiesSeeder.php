@@ -15,12 +15,12 @@ class MunicipalitiesSeeder extends Seeder
     {
         Municipality::create([
             'name' => 'Tunja',
-            'departament_id' => 2
+            'departament_id' => 1
         ]);
 
         Municipality::create([
             'name' => 'Zipaquira',
-            'departament_id' => 1
+            'departament_id' => 2
         ]);
     }
 }
