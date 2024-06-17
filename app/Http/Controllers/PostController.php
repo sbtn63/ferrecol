@@ -40,25 +40,10 @@ class PostController extends Controller
             $post->train_station_id = $request->train_station;
             $post->save();
 
-            $redirectTo = redirect()->intended(route('post.index'));
-
-        // Verificar si hay un referer (página anterior)
-            $referer = $request->headers->get('referer');
-            if ($referer) {
-                // Extraer la ruta desde el referer
-                $refererPath = parse_url($referer, PHP_URL_PATH);
-
-                // Verificar si el referer es la ruta de user.show
-                if (Str::contains($refererPath, 'user.show')) {
-                    $redirectTo = redirect()->intended($referer);
-                }
-            }
-
-            return $redirectTo->with('success', 'Publicacion creada!');
+            return redirect()->route('post.index')->with('success', 'Error al crear la Publicacion!');
 
         } catch (\Exception $e) {
-            return redirect()->route('post.index')
-                ->with('error', 'Error al crear la Publicacion!');
+            return redirect()->route('post.index')->with('error', 'Error al crear la Publicacion!');
         }
     }
 

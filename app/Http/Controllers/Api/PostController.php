@@ -1,20 +1,46 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Api;
 
 use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
+use App\Http\Resources\PostResource;
 use App\Models\Post;
 use App\Models\TrainStation;
 use Illuminate\Support\Str;
+use App\Traits\ApiResponse;
 use Auth;
 
 class PostController extends Controller
 {
+    use ApiResponse;
     public function index()
     {
-        $posts = Post::orderByDesc('created_at')->get();
-        $train_stations = TrainStation::all();
-        return view('post.index', compact('posts', 'train_stations'));
+        try {
+            $posts = Post::with(['user', 'train_station.municipality', 'comments.user'])->orderByDesc('created_at')->get();
+            $posts = PostResource::collection($posts);
+            return $this->success(200, 'Listado de Publicaciones', $posts);
+        } catch (\Exception $e) {
+            return $this->error(500, 'Internal server error');
+        }
+    }
+
+    public function show(int $id)
+    {
+        try {
+            $post = Post::find($id);
+
+            if(!$post){
+                return $this->error(404, 'La Publicacion no existe!');
+            }
+
+            $post = Post::with(['user', 'train_station.municipality', 'comments.user'])->orderByDesc('created_at')->first();
+
+            $post = new PostResource($post);
+            return $this->success(200, 'Publicacion', $post);
+        } catch (\Exception $e) {
+            return $this->error(500, 'Internal server error');
+        }
     }
 
     public function store(Request $request)
@@ -22,57 +48,34 @@ class PostController extends Controller
         $request->validate([
             'title' => 'required|min:3|max:50',
             'content' => 'required|min:3|max:255',
-            'train_station' => 'required|int'
+            'file_url' => 'max:255',
+            'train_station_id' => 'required|int'
         ]);
 
         try {
-            $post = new Post;
+
+            $train_station = TrainStation::find($request->train_station_id);
+            if (!$train_station){
+                return $this->error(404, 'La Estacion de tren no existe!');
+            }
+
+            $post = new Post();
             $post->title = $request->title;
             $post->content = $request->content;
-
-            if (!empty($request->image)) {
-                $fileName = time(). '.' . $request->image->extension();
-                $request->image->move(public_path('images'), $fileName);
-                $post->file_url = $fileName;
-            }
-
+            $post->train_station_id = $request->train_station_id;
             $post->user_id = Auth::user()->id;
-            $post->train_station_id = $request->train_station;
-            $post->save();
 
-            $redirectTo = redirect()->intended(route('post.index'));
-
-        // Verificar si hay un referer (página anterior)
-            $referer = $request->headers->get('referer');
-            if ($referer) {
-                // Extraer la ruta desde el referer
-                $refererPath = parse_url($referer, PHP_URL_PATH);
-
-                // Verificar si el referer es la ruta de user.show
-                if (Str::contains($refererPath, 'user.show')) {
-                    $redirectTo = redirect()->intended($referer);
-                }
+            if($request->file_url)
+            {
+                $post->file_url = $request->file_url;
             }
 
-            return $redirectTo->with('success', 'Publicacion creada!');
+            $post->save();
+            return $this->success(200, 'Publicacion Creada!', $post);
 
         } catch (\Exception $e) {
-            return redirect()->route('post.index')
-                ->with('error', 'Error al crear la Publicacion!');
+            return $this->error(500, 'Internal server error');
         }
-    }
-
-    public function edit(int $id)
-    {
-        $post = Post::where('id', $id)->where('user_id', Auth::user()->id)->first();
-
-        if(!$post)
-        {
-            abort(404);
-        }
-
-        $train_stations = TrainStation::all();
-        return view('post.edit', compact('post', 'train_stations'));
     }
 
     public function update(Request $request,  int $id)
@@ -80,44 +83,45 @@ class PostController extends Controller
         $request->validate([
             'title' => 'min:3|max:50',
             'content' => 'min:3|max:255',
+            'file_url' => 'max:255',
             'train_station' => 'int'
         ]);
 
         try {
             $post = Post::where('id', $id)->where('user_id', Auth::user()->id)->first();
-            $post->title = $request->title;
-            $post->content = $request->content;
 
-            if (!empty($request->image)) {
-                $fileName = time(). '.' . $request->image->extension();
-                $request->image->move(public_path('images'), $fileName);
-                $post->file_url = $fileName;
+            if(!$post){
+                return $this->error(404, 'La Publicacion no existe!');
             }
 
-            $post->train_station_id = $request->train_station;
+            if($request->train_station_id){
+                $train_station = TrainStation::find($request->train_station_id);
+                if (!$train_station){
+                    return $this->error(404, 'La Estacion de tren no existe!');
+                }
+            }
+
+            $post->fill($request->only(['title', 'content', 'file_url','train_station_id']));
             $post->save();
 
-            return redirect()->route('post.index')
-                ->with('success', 'Publicacion actualizada!');
+            return $this->success(200, 'Publicacion actualizada', $post);
         } catch (\Exception $e) {
-            return redirect()->route('post.index')
-                ->with('error', 'Error al actualzar la Publicacion!');
+            return $this->error(500, 'Internal server error'.$e);
         }
     }
 
     public function destroy(int $id)
     {
         try {
-            $post = Post::where('id', $id)
-                        ->where('user_id', Auth::user()->id)
-                        ->firstOrFail(); 
+            $post = Post::where('id', $id)->where('user_id', Auth::user()->id)->first(); 
+            if(!$post){
+                return $this->error(404, 'La Publicacion no existe!');
+            }
+
             $post->delete();
-    
-            return redirect()->route('post.index')
-                ->with('success', 'Publicacion eliminada exitosamente!');
+            return $this->success(200, 'Publicacion eliminada', $post);
         } catch (\Exception $e) {
-            return redirect()->route('post.index')
-                ->with('error', 'Error al eliminar la publicacion.');
+            return $this->error(500, 'Internal server error');
         }
     }
 }
