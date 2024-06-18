@@ -28,7 +28,7 @@
                 </header>
             </div>
         </div>
-        <img src="https://images.unsplash.com/photo-1536147116438-62679a5e01f2?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=634&q=80" alt="Leafs" class="w-full h-48 object-cover sm:h-screen sm:w-4/12">
+        <img src="https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Feltransporte.com%2Fwp-content%2Fuploads%2F2019%2F10%2F5LUNES.jpeg&f=1&nofb=1&ipt=adaa4ff2df6531509c1932377e04f6114a886c4e3f8d02b15d3a64e86d8da70b&ipo=images" alt="Leafs" class="w-full h-48 object-cover sm:h-screen sm:w-4/12">
     </div>
 </body>
 </html>
