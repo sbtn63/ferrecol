@@ -16,6 +16,16 @@ use Auth;
 class UserController extends Controller
 {
     use ApiResponse;
+    public function userAuth(){
+        try{
+            $user = Auth::user();
+            return $this->success(200, 'Usuario', $user);
+
+        } catch (\Exception $e) {
+            return $this->success(500, 'Internal server error'.$e);
+        }
+    } 
+
     public function show(int $id)
     {
         try{

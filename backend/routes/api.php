@@ -31,6 +31,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::delete('comment/{id}', [CommentController::class, 'destroy']);
 
     Route::get('profile/{id}', [UserController::class, 'show']);
+    Route::get('profile', [UserController::class, 'userAuth']);
     Route::put('profile', [UserController::class, 'update']);
 });
 
