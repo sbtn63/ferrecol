@@ -1,5 +1,7 @@
 FROM richarvey/nginx-php-fpm:1.7.2
 
+WORKDIR /var/www/html
+
 COPY . .
 
 # Image config
@@ -22,5 +24,8 @@ RUN php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');" &&
     php composer-setup.php --install-dir=/usr/local/bin --filename=composer && \
     php -r "unlink('composer-setup.php');" && \
     composer self-update --2
+
+# Instalar dependencias de Composer (si composer.json existe)
+RUN if [ -f "composer.json" ]; then composer install --no-dev --no-scripts --no-progress; fi
 
 CMD ["/start.sh"]
