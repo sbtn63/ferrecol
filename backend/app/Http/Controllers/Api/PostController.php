@@ -7,6 +7,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Resources\PostResource;
 use App\Models\Post;
 use App\Models\TrainStation;
+use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
 use App\Traits\ApiResponse;
 use Auth;
@@ -43,12 +44,16 @@ class PostController extends Controller
 
     public function store(Request $request)
     {
-        $request->validate([
+        $validator = Validator::make($request->all(), [
             'title' => 'required|min:3|max:50',
             'content' => 'required|min:3|max:255',
-            'file_url' => 'max:255',
-            'train_station_id' => 'required|int'
+            'file_url' => 'nullable|max:255',
+            'train_station_id' => 'required|integer'
         ]);
+
+        if ($validator->fails()) {
+            return $this->error(422, ["errors"=>$validator->errors()]);
+        }
 
         try {
 
@@ -78,12 +83,16 @@ class PostController extends Controller
 
     public function update(Request $request,  int $id)
     {
-        $request->validate([
+        $validator = Validator::make($request->all(), [
             'title' => 'min:3|max:50',
             'content' => 'min:3|max:255',
             'file_url' => 'max:255',
-            'train_station' => 'int'
+            'train_station_id' => 'integer'
         ]);
+
+        if ($validator->fails()) {
+            return $this->error(422, ["errors"=>$validator->errors()]);
+        }
 
         try {
             $post = Post::where('id', $id)->where('user_id', Auth::user()->id)->first();

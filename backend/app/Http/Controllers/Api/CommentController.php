@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Traits\ApiResponse;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Validator;
 use App\Models\Comment;
 use App\Models\Post;
 use Auth;
@@ -14,10 +15,14 @@ class CommentController extends Controller
     use ApiResponse;
     public function store(Request $request)
     {
-        $request->validate([
+        $validator = Validator::make($request->all(), [
             'content' => 'required|min:3|max:50',
-            'post_id' => 'required|int'
+            'post_id' => 'required|integer'
         ]);
+
+        if ($validator->fails()) {
+            return $this->error(422, ["errors"=>$validator->errors()]);
+        }
 
         try {
 
@@ -41,9 +46,13 @@ class CommentController extends Controller
 
     public function update(Request $request, int $id)
     {
-        $request->validate([
-            'content' => 'required|min:3|max:50',
+        $validator = Validator::make($request->all(), [
+            'content' => 'required|min:3|max:50'
         ]);
+
+        if ($validator->fails()) {
+            return $this->error(422, ["errors"=>$validator->errors()]);
+        }
 
         try {
             $comment = Comment::where('id', $id)->where('user_id', Auth::user()->id)->first(); 

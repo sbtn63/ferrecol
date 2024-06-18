@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Http\Resources\UserResource;
 use App\Http\Resources\PostResource;
 use App\Http\Resources\CommentsUserResource;
+use Illuminate\Support\Facades\Validator;
 use App\Models\User;
 use Illuminate\Support\Facades\Hash;
 use App\Traits\ApiResponse;
@@ -42,13 +43,16 @@ class UserController extends Controller
 
     public function update(Request $request)
     {
-
-        $request->validate([
+        $validator = Validator::make($request->all(), [
             'email' => 'email|unique:users|max:255',
             'username' => 'string|unique:users|max:50',
             'password' => 'required|string|min:8',
             'new_password' => 'string|min:8|confirmed'
         ]);
+
+        if ($validator->fails()) {
+            return $this->error(422, ["errors"=>$validator->errors()]);
+        }
 
         try{
             $user = Auth::user();
