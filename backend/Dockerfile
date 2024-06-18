@@ -25,6 +25,9 @@ RUN php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');" &&
     php -r "unlink('composer-setup.php');" && \
     composer self-update --2
 
+# Depuración: Listar archivos y contenido de composer.json
+RUN ls -la && cat composer.json
+
 # Instalar dependencias de Composer (si composer.json existe)
 RUN if [ -f "composer.json" ]; then composer install --no-dev --no-scripts --no-progress; fi
 
