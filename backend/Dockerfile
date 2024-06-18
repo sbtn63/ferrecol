@@ -1,34 +1,31 @@
-FROM richarvey/nginx-php-fpm:1.7.2
+FROM php:8.1-fpm
+
+# Instalar extensiones necesarias
+RUN apt-get update && apt-get install -y \
+    nginx \
+    libpq-dev \
+    && docker-php-ext-install pdo pdo_pgsql
+
+# Configurar Nginx
+RUN rm /etc/nginx/sites-available/default
+COPY nginx/default /etc/nginx/sites-available/default
 
 WORKDIR /var/www/html
 
 COPY . .
 
-# Image config
-ENV SKIP_COMPOSER 1
-ENV WEBROOT /var/www/html/public
-ENV PHP_ERRORS_STDERR 1
-ENV RUN_SCRIPTS 1
-ENV REAL_IP_HEADER 1
+# Configurar permisos y propiedad
+RUN chown -R www-data:www-data /var/www/html
 
-# Laravel config
-ENV APP_ENV production
-ENV APP_DEBUG false
-ENV LOG_CHANNEL stderr
-
-# Allow composer to run as root
-ENV COMPOSER_ALLOW_SUPERUSER 1
-
-# Actualizar Composer a la versión 2
+# Instalar Composer
 RUN php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');" && \
     php composer-setup.php --install-dir=/usr/local/bin --filename=composer && \
-    php -r "unlink('composer-setup.php');" && \
-    composer self-update --2
-
-# Depuración: Listar archivos y contenido de composer.json
-RUN ls -la && cat composer.json
+    php -r "unlink('composer-setup.php');"
 
 # Instalar dependencias de Composer (si composer.json existe)
 RUN if [ -f "composer.json" ]; then composer install --no-dev --no-scripts --no-progress; fi
 
-CMD ["/start.sh"]
+# Copiar configuración de PHP-FPM
+COPY php-fpm.conf /usr/local/etc/php-fpm.d/zzz-custom.conf
+
+CMD ["php-fpm"]
