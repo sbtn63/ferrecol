@@ -6,6 +6,8 @@ use App\Http\Controllers\PostController;
 use App\Http\Controllers\CommentController;
 use App\Http\Controllers\UserController; */
 
+Route::view('/', 'welcome');
+
 /* Route::get('/', [AuthController::class, 'login'])->name('login');
 Route::post('/', [AuthController::class, 'auth'])->name('auth');
 Route::get('/register', [AuthController::class, 'create'])->name('create');
