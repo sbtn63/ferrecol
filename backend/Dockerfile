@@ -1,3 +1,5 @@
+
+Copiar código
 FROM php:8.1-fpm
 
 # Instalar extensiones necesarias
@@ -8,7 +10,7 @@ RUN apt-get update && apt-get install -y \
 
 # Configurar Nginx
 RUN rm /etc/nginx/sites-available/default
-COPY nginx/default /etc/nginx/sites-available/default
+COPY conf/nginx/nginx.site.config /etc/nginx/sites-available/default
 
 WORKDIR /var/www/html
 
@@ -26,6 +28,6 @@ RUN php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');" &&
 RUN if [ -f "composer.json" ]; then composer install --no-dev --no-scripts --no-progress; fi
 
 # Copiar configuración de PHP-FPM
-COPY php-fpm.conf /usr/local/etc/php-fpm.d/zzz-custom.conf
+COPY conf/php-fpm.conf /usr/local/etc/php-fpm.d/zzz-custom.conf
 
 CMD ["php-fpm"]
