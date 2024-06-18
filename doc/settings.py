@@ -1,0 +1,1 @@
+BASE_URL = 'https://ferrecol.onrender.com/api/'
