@@ -23,7 +23,7 @@
                     <h1 class="text-4xl lg:text-6xl font-bold">Welcome to the <span class="text-green-700">FerreCol</span> API</h1>
                     <div class="w-20 h-2 bg-green-700 my-4"></div>
                     <p class="text-xl mb-10">Explore, share, and connect with enthusiasts of the Colombian railway system through the Fercol Railway Social Network API. Our platform enables users to create and share posts, engage with the community, and stay updated on the latest news and events related to the railway network in Colombia.</p>
-                   <!--  <button class="bg-green-500 text-white text-2xl font-medium px-4 py-2 rounded shadow">Learn More</button> -->
+                    <a href="https://precious-debby-company2341-9c434145.koyeb.app/docs#/endpoints" class="bg-green-500 text-white text-2xl font-medium px-4 py-2 rounded shadow">Explore API</a>
                 </div>
                 </header>
             </div>
