@@ -1,24 +1,44 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { AuthService } from '../../services/auth.service';
 
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
-  styles: []
+  styleUrls: ['./login.component.scss']
 })
-export class LoginComponent {
-  email: string = '';
-  password: string = '';
 
-  constructor(private authService: AuthService) { }
+export class LoginComponent implements OnInit {
+  loginForm: FormGroup;
 
-  async authUser(event: Event) {
-    event.preventDefault();
-    const success = await this.authService.login(this.email, this.password);
-    if (success) {
-      alert('Logeado');
+  constructor(private formBuilder: FormBuilder, private authService: AuthService) {
+    this.loginForm = this.formBuilder.group({
+      username: ['', Validators.required],
+      password: ['', Validators.required]
+    });
+  }
+
+  ngOnInit() {
+    
+  }
+
+  onSubmit() {
+    if (this.loginForm.valid) {
+      const { username, password } = this.loginForm.value;
+      this.authService.login(username, password).subscribe(
+        response => {
+          console.log('Respuesta de autenticación:', response);
+          alert('¡Inicio de sesión exitoso!');
+          
+        },
+        error => {
+          console.error('Error en la autenticación:', error);
+          alert('Error al iniciar sesión. Por favor, verifica tus credenciales.');
+          
+        }
+      );
     } else {
-      alert('Error');
+      alert('Por favor, completa el formulario correctamente.');
     }
   }
 }

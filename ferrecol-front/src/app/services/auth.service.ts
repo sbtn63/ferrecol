@@ -1,48 +1,23 @@
 import { Injectable } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import { Observable, throwError } from 'rxjs';
+import { catchError } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
-  private token: string;
+  apiUrl: string = 'https://ferrecol.onrender.com/api';
 
-  constructor() {
-    this.token = '';
-  }
+  constructor(private http: HttpClient) { }
 
-  getToken(): string {
-    return this.token;
-  }
-
-  async login(email: string, password: string): Promise<boolean> {
-    try {
-      const url = 'https://ferrecol.onrender.com/api/login';
-
-      const res = await fetch(url, {
-        method: 'POST',
-        headers: {
-          'Accept': 'application/json',
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({
-          email: email,
-          password: password
-        })
-      });
-
-      const response = await res.json();
-      if (response.error) {
-        console.log(response.message);
-        return false;
-      }
-
-      this.token = response.data.token;
-      console.log(this.token)
-      return true;
-
-    } catch (error) {
-      console.log(error);
-      return false;
-    }
+  login(email: string, password: string): Observable<any> {
+    const url = `${this.apiUrl}/login`;
+    return this.http.post(url, { email, password }, { withCredentials: true }).pipe(
+      catchError(error => {
+        console.error('Error en la autenticación:', error);
+        return error;
+      })
+    );
   }
 }
