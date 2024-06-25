@@ -1,31 +1,24 @@
 import { Component } from '@angular/core';
-import {FormBuilder, FormGroup, Validators} from "@angular/forms";
-import {AuthService} from "../../services/auth.service";
+import { AuthService } from '../../services/auth.service';
 
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
-  styleUrl: './login.component.scss'
+  styles: []
 })
 export class LoginComponent {
+  email: string = '';
+  password: string = '';
 
-    value !: string;  loginForm: FormGroup;
+  constructor(private authService: AuthService) { }
 
-  constructor(private fb: FormBuilder, private authService: AuthService) {
-    this.loginForm = this.fb.group({
-      username: ['', Validators.required],
-      password: ['', Validators.required]
-    });
-  }
-
-  ngOnInit(): void {}
-
-  onSubmit(): void {
-    this.authService.auth().subscribe( response => {
-      this.authService.authentication().subscribe( response => {
-        console.log(response)
-      })
-    })
+  async authUser(event: Event) {
+    event.preventDefault();
+    const success = await this.authService.login(this.email, this.password);
+    if (success) {
+      alert('Logeado');
+    } else {
+      alert('Error');
+    }
   }
 }
-

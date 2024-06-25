@@ -1,28 +1,48 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
-import {Observable} from "rxjs";
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
-  url: string = 'https://ferrecol-1.onrender.com/api/login';
-  constructor(private http: HttpClient) { }
+  private token: string;
 
-  auth(): Observable<any> {
-    /*return this.http.post(this.url, {
-      "email": "mariana@test.com",
-      "password": "12345678"
-    });
-
-     */
-    return this.http.get('https://ferrecol-1.onrender.com/sanctum/csrf-cookie')
+  constructor() {
+    this.token = '';
   }
 
-  authentication(): Observable<any> {
-    return this.http.post(this.url, {
-      "email": "mariana@test.com",
-      "password": "12345678"
-    });
+  getToken(): string {
+    return this.token;
+  }
+
+  async login(email: string, password: string): Promise<boolean> {
+    try {
+      const url = 'https://ferrecol.onrender.com/api/login';
+
+      const res = await fetch(url, {
+        method: 'POST',
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          email: email,
+          password: password
+        })
+      });
+
+      const response = await res.json();
+      if (response.error) {
+        console.log(response.message);
+        return false;
+      }
+
+      this.token = response.data.token;
+      console.log(this.token)
+      return true;
+
+    } catch (error) {
+      console.log(error);
+      return false;
+    }
   }
 }
