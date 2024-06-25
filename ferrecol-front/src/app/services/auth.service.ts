@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable, throwError } from 'rxjs';
-import { catchError } from 'rxjs/operators';
+import { catchError, switchMap } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
@@ -12,11 +12,16 @@ export class AuthService {
   constructor(private http: HttpClient) { }
 
   login(email: string, password: string): Observable<any> {
-    const url = `${this.apiUrl}/login`;
-    return this.http.post(url, { email, password }, { withCredentials: true }).pipe(
+    const loginUrl = `${this.apiUrl}/login`;
+    const csrfCookieUrl = 'https://ferrecol.onrender.com/sanctum/csrf-cookie';
+
+    return this.http.get(csrfCookieUrl, { withCredentials: true }).pipe(
+      switchMap(() => {
+        return this.http.post(loginUrl, { email, password }, { withCredentials: true });
+      }),
       catchError(error => {
-        console.error('Error en la autenticación:', error);
-        return error;
+        console.error('Error al obtener la cookie CSRF:', error);
+        return throwError(error);
       })
     );
   }
