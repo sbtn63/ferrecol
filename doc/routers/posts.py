@@ -133,18 +133,7 @@ async def update_post(id : int, post_data : PostUpdateData, autorization = Heade
     
     try:
         async with httpx.AsyncClient() as client:
-            post = await client.get(url+f'/{id}', headers=headers)
-            post_data = {name: content for name, content in post_data}
-            
-            if post.status_code == 200:
-                post = post.json()
-                for key, value in post['data'].items():
-                    if key in post_data and post_data[key] is None:
-                        post_data[key] = value
-                
-                if post_data['train_station_id'] is None:
-                    post_data['train_station_id'] = post['data']['train_station']['id']
-
+            post_data = post_data.dict(exclude_unset=True)
             response = await client.put(url+f'/{id}', headers=headers, json=post_data)
         return response.json()
 

@@ -87,14 +87,7 @@ async def update_user(user_data : UserUpdateData, autorization = Header(...)):
     
     try:
         async with httpx.AsyncClient(timeout=timeout) as client:
-            user = await client.get(url, headers=headers)
-            user_data = {name: content for name, content in user_data}
-            
-            if user.status_code == 200:
-                user = user.json()
-                for key, value in user['data'].items():
-                    if key in user_data and user_data[key] is None:
-                        user_data[key] = value
+            user_data = user_data.dict(exclude_unset=True)
 
             response = await client.put(url, headers=headers, json=user_data)
         return response.json()
