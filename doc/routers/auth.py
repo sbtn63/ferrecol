@@ -1,5 +1,6 @@
 from fastapi import APIRouter, HTTPException, status, Depends, Header
 from pydantic import BaseModel
+from typing import Optional
 
 import httpx
 from settings import BASE_URL
@@ -14,6 +15,7 @@ class LoginData(BaseModel):
 class RegisterData(BaseModel):
     username : str
     email: str
+    avatar : Optional[str] = None
     password: str
     password_confirmation : str
 
