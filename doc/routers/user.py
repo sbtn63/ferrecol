@@ -15,6 +15,27 @@ class UserUpdateData(BaseModel):
     new_password : Optional[str] = None
 
 
+
+@profile.get('/')
+async def get_auth_user(autorization = Header(...)):
+    headers = {
+        "Content-Type": "application/json",
+        "Authorization" : f"Bearer {autorization}"
+    }
+    
+    timeout = httpx.Timeout(20.0)
+    
+    try:
+        async with httpx.AsyncClient(timeout=timeout) as client:
+            response = await client.get(f'{url}/', headers=headers)
+        return response.json()
+
+    except httpx.HTTPStatusError as e:
+        raise HTTPException(status_code=e.response.status_code, detail=f"Error HTTP: {e.response.text}")
+
+    except httpx.RequestError as e:
+        raise HTTPException(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail=f"Error de solicitud HTTP: {str(e)}")
+    
 @profile.get('/{id}')
 async def get_user(id : int, autorization = Header(...)):
     headers = {
@@ -26,7 +47,27 @@ async def get_user(id : int, autorization = Header(...)):
     
     try:
         async with httpx.AsyncClient(timeout=timeout) as client:
-            response = await client.get(url+f'/{id}', headers=headers)
+            response = await client.get(f'{url}/{id}', headers=headers)
+        return response.json()
+
+    except httpx.HTTPStatusError as e:
+        raise HTTPException(status_code=e.response.status_code, detail=f"Error HTTP: {e.response.text}")
+
+    except httpx.RequestError as e:
+        raise HTTPException(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail=f"Error de solicitud HTTP: {str(e)}")
+    
+@profile.get('/full/{id}')
+async def get_user_full(id : int, autorization = Header(...)):
+    headers = {
+        "Content-Type": "application/json",
+        "Authorization" : f"Bearer {autorization}"
+    }
+    
+    timeout = httpx.Timeout(20.0)
+    
+    try:
+        async with httpx.AsyncClient(timeout=timeout) as client:
+            response = await client.get(f'{url}/full/{id}', headers=headers)
         return response.json()
 
     except httpx.HTTPStatusError as e:

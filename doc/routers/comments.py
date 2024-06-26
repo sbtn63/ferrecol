@@ -16,7 +16,7 @@ class CommentUpdateData(BaseModel):
     content: Optional[str] = None
 
 @comment.post('/')
-async def create_post(comment_data: ComentData, autorization = Header(...)):
+async def create_comment(comment_data: ComentData, autorization = Header(...)):
     headers = {
         "Content-Type": "application/json",
         "Authorization" : f"Bearer {autorization}"
@@ -34,7 +34,7 @@ async def create_post(comment_data: ComentData, autorization = Header(...)):
         raise HTTPException(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail=f"Error de solicitud HTTP: {str(e)}")
 
 @comment.put('/{id}')
-async def update_post(id : int, comment_data : CommentUpdateData, autorization = Header(...)):
+async def update_comment(id : int, comment_data : CommentUpdateData, autorization = Header(...)):
     headers = {
         "Content-Type": "application/json",
         "Authorization" : f"Bearer {autorization}"
@@ -52,7 +52,7 @@ async def update_post(id : int, comment_data : CommentUpdateData, autorization =
         raise HTTPException(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail=f"Error de solicitud HTTP: {str(e)}")
 
 @comment.delete('/{id}')
-async def delete_post(id : int, autorization = Header(...)):
+async def delete_commet(id : int, autorization = Header(...)):
     headers = {
         "Content-Type": "application/json",
         "Authorization" : f"Bearer {autorization}"

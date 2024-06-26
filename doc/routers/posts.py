@@ -37,6 +37,23 @@ async def read_posts():
     except httpx.RequestError as e:
         raise HTTPException(status_code=500, detail=f"Error de solicitud HTTP: {str(e)}")
 
+@post.get('/full')
+async def read_full_posts():
+    headers = {
+        "Content-Type": "application/json",
+    }
+    
+    try:
+        async with httpx.AsyncClient() as client:
+            response = await client.get(f'{url}/full', headers=headers)
+        return response.json()
+
+    except httpx.HTTPStatusError as e:
+        raise HTTPException(status_code=e.response.status_code, detail=f"Error HTTP: {e.response.text}")
+
+    except httpx.RequestError as e:
+        raise HTTPException(status_code=500, detail=f"Error de solicitud HTTP: {str(e)}")
+    
 @post.get('/{id}')
 async def get_post(id : int):
     headers = {
@@ -46,6 +63,41 @@ async def get_post(id : int):
     try:
         async with httpx.AsyncClient() as client:
             response = await client.get(url+f'/{id}', headers=headers)
+        return response.json()
+
+    except httpx.HTTPStatusError as e:
+        raise HTTPException(status_code=e.response.status_code, detail=f"Error HTTP: {e.response.text}")
+
+    except httpx.RequestError as e:
+        raise HTTPException(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail=f"Error de solicitud HTTP: {str(e)}")
+
+@post.get('/full/{id}')
+async def get_full_post(id : int):
+    headers = {
+        "Content-Type": "application/json"
+    }
+    
+    try:
+        async with httpx.AsyncClient() as client:
+            response = await client.get(f'{url}/full/{id}', headers=headers)
+        return response.json()
+
+    except httpx.HTTPStatusError as e:
+        raise HTTPException(status_code=e.response.status_code, detail=f"Error HTTP: {e.response.text}")
+
+    except httpx.RequestError as e:
+        raise HTTPException(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail=f"Error de solicitud HTTP: {str(e)}")
+
+@post.get('/{id}/comments')
+async def get_commets_post(id : int, autorization = Header(...)):
+    headers = {
+        "Content-Type": "application/json",
+        "Authorization" : f"Bearer {autorization}"
+    }
+    
+    try:
+        async with httpx.AsyncClient() as client:
+            response = await client.get(f'{url}/{id}/comments', headers=headers)
         return response.json()
 
     except httpx.HTTPStatusError as e:
