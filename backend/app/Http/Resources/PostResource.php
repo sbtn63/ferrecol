@@ -24,7 +24,7 @@ class PostResource extends JsonResource
             'user' => $this->user,
             'train_station' => new TrainStationResource($this->whenLoaded('train_station')),
             'comments' => CommentPostResource::collection($this->whenLoaded('comments')),
-            'comments_count' => $this->comments->count(),
+            'commentsCount' => $this->comments->count(),
         ];
     }
 }

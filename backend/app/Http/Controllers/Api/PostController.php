@@ -15,7 +15,22 @@ use Auth;
 class PostController extends Controller
 {
     use ApiResponse;
+
+    
     public function index()
+    {
+        try {
+            $posts = Post::orderBy('created_at', 'desc')->get();
+            foreach ($posts as $post) {
+                $post['coutComments'] = $post->comments()->count();
+            }
+            return $this->success(200, 'Listado de Publicaciones', $posts);
+        } catch (\Exception $e) {
+            return $this->error(500, 'Internal server error');
+        }
+    }
+
+    public function full()
     {
         try {
             $posts = Post::with(['user', 'train_station.municipality', 'comments.user'])->orderByDesc('created_at')->get();
@@ -29,6 +44,21 @@ class PostController extends Controller
     public function show(int $id)
     {
         try {
+            $post = Post::find($id);
+
+            if (!$post) {
+                return $this->error(404, 'La Publicacion no existe!');
+            }
+
+            return $this->success(200, 'Publicacion', ['post' => $post, 'countComments' => $post->comments()->count()]);
+        } catch (\Exception $e) {
+            return $this->error(500, 'Internal server error');
+        }
+    }
+
+    public function show_full(int $id)
+    {
+        try {
             $post = Post::with(['user', 'train_station.municipality', 'comments.user'])->find($id);
 
             if (!$post) {
@@ -37,6 +67,22 @@ class PostController extends Controller
 
             $post = new PostResource($post);
             return $this->success(200, 'Publicacion', $post);
+        } catch (\Exception $e) {
+            return $this->error(500, 'Internal server error');
+        }
+    }
+
+    public function show_comments(int $id)
+    {
+        try {
+            $post = Post::find($id);
+
+            if (!$post) {
+                return $this->error(404, 'La Publicacion no existe!');
+            }
+
+            $comments = $post->comments()->get();
+            return $this->success(200, 'Publicacion', ['comments' => $comments, 'countComments' => $comments->count()]);
         } catch (\Exception $e) {
             return $this->error(500, 'Internal server error');
         }
@@ -132,3 +178,4 @@ class PostController extends Controller
         }
     }
 }
+
