@@ -27,14 +27,11 @@ class AuthController extends Controller
         }
 
         try {
-
-            $avatar = $request->input('avatar', null);
     
             $user = User::create([
                 'username' => $request->username,
                 'email' => $request->email,
                 'password' => bcrypt($request->password),
-                'avatar' => $avatar,
             ]);
     
             $data = ['token' => $user->createToken('api_token')->plainTextToken];
