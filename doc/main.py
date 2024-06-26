@@ -6,6 +6,7 @@ from routers.comments import comment
 from routers.auth import auth
 from routers.departaments import departament
 from routers.municipalities import municipality
+from routers.train_stations import train_station
 from routers.user import profile
 
 app = FastAPI()
@@ -16,6 +17,7 @@ app.include_router(post, prefix='/api/post', tags=['posts'])
 app.include_router(comment, prefix='/api/comment', tags=['comments'])
 app.include_router(departament, prefix='/api/departament', tags=['departament'])
 app.include_router(municipality, prefix='/api/municipality', tags=['municipality'])
+app.include_router(train_station, prefix='/api/trainstations', tags=['train station'])
 
 @app.get('/')
 def hello():
