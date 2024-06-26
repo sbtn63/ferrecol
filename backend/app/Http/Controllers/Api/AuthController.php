@@ -28,12 +28,13 @@ class AuthController extends Controller
 
         try {
 
-            $avatar = $request->input('avatar', 'default_avatar.png');
+            $avatar = $request->input('avatar', null);
     
             $user = User::create([
                 'username' => $request->username,
                 'email' => $request->email,
                 'password' => bcrypt($request->password),
+                'avatar' => $avatar,
             ]);
     
             $data = ['token' => $user->createToken('api_token')->plainTextToken];
@@ -62,8 +63,8 @@ class AuthController extends Controller
         }
         
         if (Hash::check($request->password, $user->password)) {
-            $data = ['token' => $user->createToken('api_token')->plainTextToken, 'user' => $user];
-            return $this->success(200, '¡Inició sesión exitosamente!', $data);
+            $data = ['token' => $user->createToken('api_token')->plainTextToken];
+            return $this->success(201, '¡Usuario creado exitosamente!', $data);
         } else {
             return $this->error(404, 'Estas credenciales no son válidas.');
         }

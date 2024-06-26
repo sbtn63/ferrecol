@@ -16,7 +16,7 @@ use Auth;
 class UserController extends Controller
 {
     use ApiResponse;
-    public function userAuth(){
+    public function show_auth(){
         try{
             $user = Auth::user();
             return $this->success(200, 'Usuario', $user);
@@ -26,7 +26,24 @@ class UserController extends Controller
         }
     } 
 
+
     public function show(int $id)
+    {
+        try{
+            $user = User::find($id);
+
+            if(!$user){
+                return $this->error(404, 'El usuario no existe');
+            }
+
+            return $this->success(200, 'Usuario', ["user" => $user, "countPosts" => $user->posts()->count(), "countCommentsUser" => $user->comments()->count()]);
+
+        } catch (\Exception $e) {
+            return $this->success(500, 'Internal server error'.$e);
+        }
+    }
+
+    public function show_full(int $id)
     {
         try{
             $user = User::find($id);
@@ -44,7 +61,7 @@ class UserController extends Controller
             $comments = $comments->with(['user', 'post', 'post.train_station.municipality'])->get();
             $comments = CommentsUserResource::collection($comments);
 
-            return $this->success(200, 'Usuario', ["user" => $user, "posts_user" => $posts, "comments_user" => $comments]);
+            return $this->success(200, 'Usuario', ["user" => $user, "postsUser" => $posts, "commentsUser" => $comments]);
 
         } catch (\Exception $e) {
             return $this->success(500, 'Internal server error'.$e);
