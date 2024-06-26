@@ -15,7 +15,6 @@ class LoginData(BaseModel):
 class RegisterData(BaseModel):
     username : str
     email: str
-    avatar : Optional[str] = None
     password: str
     password_confirmation : str
 
