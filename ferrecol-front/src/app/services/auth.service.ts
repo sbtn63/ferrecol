@@ -26,33 +26,6 @@ export class AuthService {
       })
     );
   }
-
-  /* login(email: string, password: string): Observable<any> {
-    const loginUrl = `${this.url}/api/login`;
-
-    return this.http.get(`${this.url}/sanctum/csrf-cookie`, { withCredentials: true }).pipe(
-      switchMap(() => {
-        return this.http.post(loginUrl, { email, password }, { withCredentials: true });
-      }),
-      catchError(error => {
-        console.error('Error al obtener la cookie CSRF:', error);
-        return throwError(error);
-      })
-    );
-  }
-
-  register(username : string, email: string, password: string, password_confirmation : string): Observable<any> {
-    const registerUrl = `${this.url}/api/register`;
-
-    return this.http.get(`${this.url}/sanctum/csrf-cookie`, { withCredentials: true }).pipe(
-      switchMap(() => {
-        return this.http.post(registerUrl, {username, email, password, password_confirmation }, { withCredentials: true });
-      }),
-      catchError(error => {
-        console.error('Error al obtener la cookie CSRF:', error);
-        return throwError(error);
-      })
-    ); */
 }
 
 
