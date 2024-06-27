@@ -3,18 +3,19 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { AuthService } from '../../services/auth.service';
 
 @Component({
-  selector: 'app-login',
-  templateUrl: './login.component.html',
-  styleUrls: ['./login.component.scss']
+  selector: 'app-register',
+  templateUrl: './register.component.html',
+  styleUrl: './register.component.scss'
 })
-
-export class LoginComponent implements OnInit {
+export class RegisterComponent implements OnInit {
   loginForm: FormGroup;
 
   constructor(private formBuilder: FormBuilder, private authService: AuthService) {
     this.loginForm = this.formBuilder.group({
+      username: ['', Validators.required],
       email: ['', Validators.required],
-      password: ['', Validators.required]
+      password: ['', Validators.required],
+      password_confirmation: ['', Validators.required],
     });
   }
 
@@ -24,16 +25,16 @@ export class LoginComponent implements OnInit {
 
   onSubmit() {
     if (this.loginForm.valid) {
-      const { email, password } = this.loginForm.value;
-      this.authService.auth(email, password).subscribe(
+      const { username, email, password, password_confirmation } = this.loginForm.value;
+      this.authService.auth(email, password, username, password_confirmation).subscribe(
         response => {
           console.log('Respuesta de autenticación:', response);
-          alert('¡Inicio de sesión exitoso!');
+          alert('¡Registrado exitosamente!');
           
         },
         error => {
-          console.error('Error en la autenticación:', error);
-          alert('Error al iniciar sesión. Por favor, verifica tus credenciales.');
+          console.error('Error en el registro:', error);
+          alert('Error al registrarse. Por favor, verifica tus credenciales.');
           
         }
       );

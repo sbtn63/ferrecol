@@ -7,15 +7,30 @@ import { catchError, switchMap } from 'rxjs/operators';
   providedIn: 'root'
 })
 export class AuthService {
-  apiUrl: string = 'https://ferrecol.onrender.com/api';
+  url: string = 'https://ferrecol.onrender.com';
 
   constructor(private http: HttpClient) { }
 
-  login(email: string, password: string): Observable<any> {
-    const loginUrl = `${this.apiUrl}/login`;
-    const csrfCookieUrl = 'https://ferrecol.onrender.com/sanctum/csrf-cookie';
+  auth(email : string, password : string,  username : string = '', password_confirmation : string = '') : Observable<any>{
+    return this.http.get(`${this.url}/sanctum/csrf-cookie`, { withCredentials: true }).pipe(
+      switchMap(() => {
+        if (username == '' || password_confirmation == ''){
+          return this.http.post(`${this.url}/api/login`, { email, password }, { withCredentials: true });
+        } else {
+          return this.http.post(`${this.url}/api/register`, {username, email, password, password_confirmation }, { withCredentials: true });
+        }
+      }),
+      catchError(error => {
+        console.error('Error al obtener la cookie CSRF:', error);
+        return throwError(error);
+      })
+    );
+  }
 
-    return this.http.get(csrfCookieUrl, { withCredentials: true }).pipe(
+  /* login(email: string, password: string): Observable<any> {
+    const loginUrl = `${this.url}/api/login`;
+
+    return this.http.get(`${this.url}/sanctum/csrf-cookie`, { withCredentials: true }).pipe(
       switchMap(() => {
         return this.http.post(loginUrl, { email, password }, { withCredentials: true });
       }),
@@ -25,4 +40,19 @@ export class AuthService {
       })
     );
   }
+
+  register(username : string, email: string, password: string, password_confirmation : string): Observable<any> {
+    const registerUrl = `${this.url}/api/register`;
+
+    return this.http.get(`${this.url}/sanctum/csrf-cookie`, { withCredentials: true }).pipe(
+      switchMap(() => {
+        return this.http.post(registerUrl, {username, email, password, password_confirmation }, { withCredentials: true });
+      }),
+      catchError(error => {
+        console.error('Error al obtener la cookie CSRF:', error);
+        return throwError(error);
+      })
+    ); */
 }
+
+

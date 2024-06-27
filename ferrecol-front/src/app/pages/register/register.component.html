@@ -1,0 +1,44 @@
+<div class="register-container">
+    <h2>Register</h2>
+  
+    <form [formGroup]="loginForm" class="register-container-register" (ngSubmit)="onSubmit()">
+      <div class="box">
+        <p-floatLabel>
+          <input id="username" type="text" pInputText formControlName="username"/>
+          <label for="username">Username</label>
+        </p-floatLabel>
+      </div>
+      <div class="box">
+        <p-floatLabel>
+          <input id="email" type="email" pInputText formControlName="email"/>
+          <label for="email">Email</label>
+        </p-floatLabel>
+      </div>
+      <div class="box">
+        <p-floatLabel>
+          <p-password
+            id="password"
+            formControlName="password"
+            [toggleMask]="true"
+            [feedback]="false"
+          ></p-password>
+          <label for="password">Password</label>
+        </p-floatLabel>
+      </div>
+      <div class="box">
+        <p-floatLabel>
+          <p-password
+            id="password_confirmation"
+            formControlName="password_confirmation"
+            [toggleMask]="true"
+            [feedback]="false"
+          ></p-password>
+          <label for="password_confirmation">Confirm Password</label>
+        </p-floatLabel>
+      </div>
+      <div class="box">
+        <p-button label="Register" type="submit"></p-button>
+      </div>
+  
+    </form>
+  </div>
