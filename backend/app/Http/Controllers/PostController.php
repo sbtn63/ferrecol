@@ -39,10 +39,10 @@ class PostController extends Controller
             $post->train_station_id = $request->train_station;
             $post->save();
 
-            return redirect()->route('post.index')->with('success', 'Publicacion Creada!!');
+            return redirect()->route('post.index')->with('success', '¡Publicación creada!');
 
         } catch (\Exception $e) {
-            return redirect()->route('post.index')->with('error', 'Error al crear la Publicacion!');
+            return redirect()->route('post.index')->with('error', '¡Error al crear la publicación!');
         }
     }
 
@@ -60,7 +60,7 @@ class PostController extends Controller
 
             if(!$post)
             {
-                return $this->redirectUrl($referer, Auth::user()->id, 'Publicacion no existe!!');
+                return $this->redirectUrl($referer, Auth::user()->id, '¡Publicación no existe!!');
             }
 
             $post->title = $request->title;
@@ -75,10 +75,10 @@ class PostController extends Controller
             $post->train_station_id = $request->train_station;
             $post->save();
 
-            return $this->redirectUrl($referer, Auth::user()->id, 'Publicacion Actualizada!!');
+            return $this->redirectUrl($referer, Auth::user()->id, '¡Publicación actualizada!');
         } catch (\Exception $e) {
             return redirect()->route('post.index')
-                ->with('error', 'Error al actualzar la Publicacion!');
+                ->with('error', '¡Error al actualzar la publicación!');
         }
     }
 
@@ -98,11 +98,11 @@ class PostController extends Controller
     
             $referer = $request->headers->get('referer');
 
-            return $this->redirectUrl($referer, Auth::user()->id, 'Publicacion Eliminada!!');
+            return $this->redirectUrl($referer, Auth::user()->id, '¡Publicación eliminada!!');
 
         } catch (\Exception $e) {
             return redirect()->route('post.index')
-                ->with('error', 'Error al eliminar la publicacion.');
+                ->with('error', '¡Error al eliminar la publicación!');
         }
     }
 

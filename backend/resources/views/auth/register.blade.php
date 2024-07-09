@@ -19,14 +19,14 @@
 					style="background-image: url({{ asset('images/image_1.jpg') }})"></div>
 				<!-- Col -->
 				<div class="w-full lg:w-7/12 bg-white dark:bg-gray-800 p-5 rounded-lg lg:rounded-l-none">
-					<h3 class="py-4 text-2xl font-semibold text-center text-gray-800 dark:text-white">Crear Cuenta!</h3>
+					<h3 class="py-4 text-2xl font-semibold text-center text-gray-800 dark:text-white">¡Crear Cuenta!</h3>
 					<form class="px-8 pt-6 mb-4" action="{{ route('create') }}" method="post">
 
                         @csrf
 
                         <div class="mb-4">
 							<label class="block mb-2 text-sm font-bold text-gray-700 dark:text-white" for="username">
-                                Username
+                                Nombre usuario
                             </label>
 							<input
                                 class="w-full px-3 py-2 mb-3 text-sm leading-tight text-gray-700  border rounded shadow appearance-none focus:outline-none focus:shadow-outline"
@@ -40,7 +40,7 @@
 						</div>
 						<div class="mb-4">
 							<label class="block mb-2 text-sm font-bold text-gray-700 dark:text-white" for="email">
-                                Email
+								Correo electrónico
                             </label>
 							<input
                                 class="w-full px-3 py-2 mb-3 text-sm leading-tight text-gray-700 border rounded shadow appearance-none focus:outline-none focus:shadow-outline"
@@ -91,7 +91,7 @@
 						<div class="text-center">
 							<a class="inline-block text-sm text-blue-500 dark:text-blue-500 align-baseline hover:text-blue-800"
 								href="{{ route('login') }}">
-								Ya tienes cuenta? Login!
+								¿Ya tienes cuenta? ¡Iniciar sesión!
 							</a>
 						</div>
 					</form>

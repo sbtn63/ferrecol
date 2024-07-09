@@ -23,10 +23,10 @@ class CommentController extends Controller
             $comment->save();
 
             return redirect()->route('post.index')
-                ->with('success', 'Commentario creado!');
+                ->with('success', '¡Comentario creado!');
         } catch (\Exception $e) {
             return redirect()->route('post.index')
-                ->with('error', 'Error al comentar la Publicacion!'.$e);
+                ->with('error', '¡Error al comentar la publicación!');
         }
     }
 
@@ -45,17 +45,17 @@ class CommentController extends Controller
             if (!$comment)
             {
                 return redirect()->route('post.index')
-                ->with('error', 'Comentario no existe!');
+                ->with('error', '¡Comentario no existe!');
             }
             
             $comment->content = $request->content;
             $comment->save();
     
             return redirect()->route('post.index')
-                ->with('success', 'Comentario actualizado exitosamente!');
+                ->with('success', '¡Comentario actualizado exitosamente!');
         } catch (\Exception $e) {
             return redirect()->route('post.index')
-                ->with('error', 'Error al actualizar el Comentario.');
+                ->with('error', '¡Error al actualizar el comentario!');
         }
     }
 
@@ -69,16 +69,16 @@ class CommentController extends Controller
             if (!$comment)
             {
                 return redirect()->route('post.index')
-                ->with('error', 'Comentario no existe!');
+                ->with('error', '¡Comentario no existe!');
             }
             
             $comment->delete();
     
             return redirect()->route('post.index')
-                ->with('success', 'Comentario eliminado exitosamente!');
+                ->with('success', '¡Comentario eliminado exitosamente!');
         } catch (\Exception $e) {
             return redirect()->route('post.index')
-                ->with('error', 'Error al eliminar el Comentario.');
+                ->with('error', '¡Error al eliminar el comentario!');
         }
     }
 }

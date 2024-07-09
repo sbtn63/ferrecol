@@ -24,7 +24,7 @@ class AuthController extends Controller
             return redirect()->route('post.index');
         }
 
-        return redirect()->route('login')->with('error', 'Lo datos no son correctos');
+        return redirect()->route('login')->with('error', '¡Los datos no son correctos!');
     }
 
     public function create()
