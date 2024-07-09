@@ -18,7 +18,7 @@
 				<div class="w-full h-auto bg-gray-400 dark:bg-gray-800 hidden lg:block lg:w-5/12 bg-cover rounded-l-lg"
 					style="background-image: url({{ asset('images/image_1.jpg') }})"></div>
 				<!-- Col -->
-				<div class="w-full lg:w-7/12 bg-white dark:bg-gray-700 p-5 rounded-lg lg:rounded-l-none">
+				<div class="w-full lg:w-7/12 bg-white dark:bg-gray-800 p-5 rounded-lg lg:rounded-l-none">
 					<h3 class="py-4 text-2xl font-semibold text-center text-gray-800 dark:text-white">Crear Cuenta!</h3>
 					<form class="px-8 pt-6 mb-4" action="{{ route('create') }}" method="post">
 
@@ -52,7 +52,7 @@
 						</div>
 						<div class="mb-4 md:flex md:justify-between">
 							<div class="mb-4 md:mr-2 md:mb-0">
-								<label class="block mb-2 text-sm font-bold text-gray-700" for="password">
+								<label class="block mb-2 text-sm font-bold text-gray-700 dark:text-white" for="password">
                                     Contraseña
                                 </label>
 								<input

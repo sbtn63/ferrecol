@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Post;
 use App\Models\TrainStation;
-use Illuminate\Support\Str;
 use Auth;
 
 class PostController extends Controller
@@ -22,7 +21,7 @@ class PostController extends Controller
         $request->validate([
             'title' => 'required|min:3|max:50',
             'content' => 'required|min:3|max:255',
-            'train_station' => 'required|int'
+            'train_station' => 'required|int|exists:train_stations,id'
         ]);
 
         try {
@@ -47,29 +46,23 @@ class PostController extends Controller
         }
     }
 
-    public function edit(int $id)
-    {
-        $post = Post::where('id', $id)->where('user_id', Auth::user()->id)->first();
-
-        if(!$post)
-        {
-            abort(404);
-        }
-
-        $train_stations = TrainStation::all();
-        return view('post.edit', compact('post', 'train_stations'));
-    }
-
     public function update(Request $request,  int $id)
     {
         $request->validate([
             'title' => 'min:3|max:50',
             'content' => 'min:3|max:255',
-            'train_station' => 'int'
+            'train_station' => 'required|int|exists:train_stations,id'
         ]);
 
         try {
+            $referer = $request->headers->get('referer');
             $post = Post::where('id', $id)->where('user_id', Auth::user()->id)->first();
+
+            if(!$post)
+            {
+                return $this->redirectUrl($referer, Auth::user()->id, 'Publicacion no existe!!');
+            }
+
             $post->title = $request->title;
             $post->content = $request->content;
 
@@ -82,15 +75,7 @@ class PostController extends Controller
             $post->train_station_id = $request->train_station;
             $post->save();
 
-            $referer = $request->headers->get('referer');
-
-            if (strpos($referer, route('user.show', ['id' => Auth::user()->id])) !== false) {
-                return redirect()->route('user.show', ['id' => Auth::user()->id])
-                    ->with('success', 'Publicación actualizada!');
-            } else {
-                return redirect()->route('post.index')
-                    ->with('success', 'Publicación actualizada!');
-            }
+            return $this->redirectUrl($referer, Auth::user()->id, 'Publicacion Actualizada!!');
         } catch (\Exception $e) {
             return redirect()->route('post.index')
                 ->with('error', 'Error al actualzar la Publicacion!');
@@ -102,21 +87,33 @@ class PostController extends Controller
         try {
             $post = Post::where('id', $id)
                         ->where('user_id', Auth::user()->id)
-                        ->firstOrFail(); 
+                        ->first(); 
+
+            if(!$post)
+            {
+                abort(404);
+            }
+            
             $post->delete();
     
             $referer = $request->headers->get('referer');
 
-            if (strpos($referer, route('user.show', ['id' => Auth::user()->id])) !== false) {
-                return redirect()->route('user.show', ['id' => Auth::user()->id])
-                    ->with('success', 'Publicación Eliminada!');
-            } else {
-                return redirect()->route('post.index')
-                    ->with('success', 'Publicación Eliminada!');
-            }
+            return $this->redirectUrl($referer, Auth::user()->id, 'Publicacion Eliminada!!');
+
         } catch (\Exception $e) {
             return redirect()->route('post.index')
                 ->with('error', 'Error al eliminar la publicacion.');
+        }
+    }
+
+    private function redirectUrl($referer, $userId, $message)
+    {
+        if (strpos($referer, route('user.show', ['id' => $userId])) !== false) {
+            return redirect()->route('user.show', ['id' => $userId])
+                ->with('success', $message);
+        } else {
+            return redirect()->route('post.index')
+                ->with('success', $message);
         }
     }
 }

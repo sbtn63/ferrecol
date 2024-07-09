@@ -12,7 +12,7 @@ class CommentController extends Controller
     {
         $request->validate([
             'content' => 'required|min:3|max:50',
-            'post' => 'required|int'
+            'post' => 'required|int|exists:posts,id'
         ]);
 
         try {
@@ -30,12 +30,48 @@ class CommentController extends Controller
         }
     }
 
+
+    public function update(Request $request, int $id)
+    {
+        $request->validate([
+            'content' => 'required|min:3|max:50'
+        ]);
+
+        try {
+            $comment = Comment::where('id', $id)
+                        ->where('user_id', Auth::user()->id)
+                        ->first();
+            
+            if (!$comment)
+            {
+                return redirect()->route('post.index')
+                ->with('error', 'Comentario no existe!');
+            }
+            
+            $comment->content = $request->content;
+            $comment->save();
+    
+            return redirect()->route('post.index')
+                ->with('success', 'Comentario actualizado exitosamente!');
+        } catch (\Exception $e) {
+            return redirect()->route('post.index')
+                ->with('error', 'Error al actualizar el Comentario.');
+        }
+    }
+
     public function destroy(int $id)
     {
         try {
             $comment = Comment::where('id', $id)
                         ->where('user_id', Auth::user()->id)
-                        ->firstOrFail(); 
+                        ->first();
+            
+            if (!$comment)
+            {
+                return redirect()->route('post.index')
+                ->with('error', 'Comentario no existe!');
+            }
+            
             $comment->delete();
     
             return redirect()->route('post.index')

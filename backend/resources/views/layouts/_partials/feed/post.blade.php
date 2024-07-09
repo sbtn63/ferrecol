@@ -71,7 +71,7 @@
 </article>
 
 <div id="article-{{ $post->id }}" class="hidden mt-4">
-    @foreach ($post->comments as $comment )
+    @foreach ($post->comments->sortBy('created_at') as $comment )
         @include('layouts._partials.feed.comment')
     @endforeach
 </div>

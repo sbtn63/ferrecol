@@ -14,7 +14,7 @@
             <div class="lg:w-1/2 bg-cover bg-center hidden lg:block"
                  style="background-image: url('{{ asset('images/image_2.jpg') }}');">
             </div>
-            <div class="w-full p-8 lg:w-1/2 dark:bg-gray-700">
+            <div class="w-full p-8 lg:w-1/2 dark:bg-gray-800">
                 <h2 class="text-2xl font-semibold text-gray-700 text-center dark:text-white">FerreCol</h2>
                 <p class="text-xl text-gray-600 text-center dark:text-white">Bienvenido de Nuevo!!</p>
 

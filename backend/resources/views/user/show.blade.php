@@ -11,7 +11,9 @@
 
 @section('content')
 
+<div class="absolute mt-2 right-0 mr-6">
 @include('layouts._partials.messages')
+</div>
 
 
 <div class="font-sans flex items-center justify-center">
@@ -28,7 +30,7 @@
                     @include('layouts._partials.profile.post')
                 </div>  
                 @empty
-                    <p>No existen posts</p>
+                    <p class="p-4 rounded-lg shadow-md border-l-4 font-semibold text-gray-400 bg-white border-blue-600 mb-6 dark:bg-gray-900 dark:text-withe">No existen posts</p>
                 @endforelse
             </div>
 
@@ -38,7 +40,7 @@
                     @include('layouts._partials.profile.comment')
                 </div>
                 @empty
-                    <p>No existen comentarios</p>
+                    <p class="p-4 rounded-lg shadow-md border-l-4 font-semibold text-gray-400 bg-white border-blue-600 mb-6 dark:bg-gray-900 dark:text-withe">No existen comentarios</p>
                 @endforelse
             </div>
         </div>

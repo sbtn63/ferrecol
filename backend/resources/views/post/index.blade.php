@@ -28,7 +28,7 @@
 @forelse ($posts as $post)
     @include('layouts._partials.feed.post')
 @empty
-    <p>No existen posts</p>
+    <p class="p-4 rounded-lg shadow-md border-l-4 font-semibold text-gray-400 bg-white border-blue-600 mb-6 dark:bg-gray-900 dark:text-withe">No existen posts</p>
 @endforelse
 </div>
 

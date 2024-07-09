@@ -18,11 +18,11 @@ Route::middleware('auth:sanctum')->group(function () {
 
     Route::get('/post', [PostController::class, 'index'])->name('post.index');
     Route::post('/post', [PostController::class, 'store'])->name('post.store');
-    Route::get('/post/{id}', [PostController::class, 'edit'])->name('post.edit');
     Route::put('/post/{id}', [PostController::class, 'update'])->name('post.update');
     Route::delete('/post/{id}', [PostController::class, 'destroy'])->name('post.destroy');
 
     Route::post('/comment', [CommentController::class, 'store'])->name('comment.store');
+    Route::put('/comment/{id}', [CommentController::class, 'update'])->name('comment.update');
     Route::delete('/comment/{id}', [CommentController::class, 'destroy'])->name('comment.destroy');
 
     Route::get('profile/{id}', [UserController::class, 'show'])->name('user.show');
