@@ -29,4 +29,20 @@ class CommentController extends Controller
                 ->with('error', 'Error al comentar la Publicacion!'.$e);
         }
     }
+
+    public function destroy(int $id)
+    {
+        try {
+            $comment = Comment::where('id', $id)
+                        ->where('user_id', Auth::user()->id)
+                        ->firstOrFail(); 
+            $comment->delete();
+    
+            return redirect()->route('post.index')
+                ->with('success', 'Comentario eliminado exitosamente!');
+        } catch (\Exception $e) {
+            return redirect()->route('post.index')
+                ->with('error', 'Error al eliminar el Comentario.');
+        }
+    }
 }

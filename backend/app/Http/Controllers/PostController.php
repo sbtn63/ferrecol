@@ -40,7 +40,7 @@ class PostController extends Controller
             $post->train_station_id = $request->train_station;
             $post->save();
 
-            return redirect()->route('post.index')->with('success', 'Error al crear la Publicacion!');
+            return redirect()->route('post.index')->with('success', 'Publicacion Creada!!');
 
         } catch (\Exception $e) {
             return redirect()->route('post.index')->with('error', 'Error al crear la Publicacion!');
@@ -82,15 +82,22 @@ class PostController extends Controller
             $post->train_station_id = $request->train_station;
             $post->save();
 
-            return redirect()->route('post.index')
-                ->with('success', 'Publicacion actualizada!');
+            $referer = $request->headers->get('referer');
+
+            if (strpos($referer, route('user.show', ['id' => Auth::user()->id])) !== false) {
+                return redirect()->route('user.show', ['id' => Auth::user()->id])
+                    ->with('success', 'Publicación actualizada!');
+            } else {
+                return redirect()->route('post.index')
+                    ->with('success', 'Publicación actualizada!');
+            }
         } catch (\Exception $e) {
             return redirect()->route('post.index')
                 ->with('error', 'Error al actualzar la Publicacion!');
         }
     }
 
-    public function destroy(int $id)
+    public function destroy(Request $request, int $id)
     {
         try {
             $post = Post::where('id', $id)
@@ -98,8 +105,15 @@ class PostController extends Controller
                         ->firstOrFail(); 
             $post->delete();
     
-            return redirect()->route('post.index')
-                ->with('success', 'Publicacion eliminada exitosamente!');
+            $referer = $request->headers->get('referer');
+
+            if (strpos($referer, route('user.show', ['id' => Auth::user()->id])) !== false) {
+                return redirect()->route('user.show', ['id' => Auth::user()->id])
+                    ->with('success', 'Publicación Eliminada!');
+            } else {
+                return redirect()->route('post.index')
+                    ->with('success', 'Publicación Eliminada!');
+            }
         } catch (\Exception $e) {
             return redirect()->route('post.index')
                 ->with('error', 'Error al eliminar la publicacion.');
