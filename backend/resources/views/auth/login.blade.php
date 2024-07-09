@@ -24,7 +24,7 @@
 
                     <div class="mt-4">
                         <label for="email" class="block text-gray-700 text-sm font-bold mb-2 dark:text-white">Email</label>
-                        <input class="bg-gray-200 text-gray-700 focus:outline-none focus:shadow-outline border border-gray-300 rounded py-2 px-4 block w-full appearance-none" type="email" name="email" />
+                        <input class="bg-gray-200 text-gray-700 focus:outline-none focus:shadow-outline border border-gray-300 rounded py-2 px-4 block w-full appearance-none" type="email" name="email" autocomplete="off" />
                         @error('email') <p class="text-xs italic text-red-500">{{ $message }}</p> @enderror
                     </div>
                     <div class="mt-4">

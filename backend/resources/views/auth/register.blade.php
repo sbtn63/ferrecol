@@ -34,6 +34,7 @@
                                 name="username"
                                 type="text"
                                 placeholder="example"
+								autocomplete="off"
                             />
                             @error('username') <p class="text-xs italic text-red-500">{{ $message }}</p> @enderror
 						</div>
@@ -47,6 +48,7 @@
                                 name="email"
                                 type="email"
                                 placeholder="example@example.com"
+								autocomplete="off"
                             />
                             @error('email') <p class="text-xs italic text-red-500">{{ $message }}</p> @enderror
 						</div>
