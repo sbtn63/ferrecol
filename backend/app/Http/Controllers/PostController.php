@@ -20,7 +20,7 @@ class PostController extends Controller
     {
         $request->validate([
             'title' => 'required|min:3|max:50',
-            'content' => 'required|min:3|max:255',
+            'content' => 'required|min:3|max:400',
             'train_station' => 'required|int|exists:train_stations,id'
         ]);
 
@@ -50,7 +50,7 @@ class PostController extends Controller
     {
         $request->validate([
             'title' => 'min:3|max:50',
-            'content' => 'min:3|max:255',
+            'content' => 'min:3|max:400',
             'train_station' => 'required|int|exists:train_stations,id'
         ]);
 
