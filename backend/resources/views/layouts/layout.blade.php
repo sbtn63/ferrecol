@@ -7,7 +7,6 @@
     <link rel="stylesheet" href="{{ asset('css/style.css') }}">
     <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
     <script src="https://cdn.tailwindcss.com"></script>
-    <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
 </head>
 <body class="bg-gray-100 dark:bg-gray-700">
 
