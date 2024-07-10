@@ -2,13 +2,19 @@
 
 @section('title', 'Login')
 
+@section('navbar')
+
+@include('layouts._partials.navbar')
+
+@endsection
+
 @section('content')
 
 <div class="absolute mt-2 right-0 mr-6">
 @include('layouts._partials.messages')
 </div>
 
-<div class="min-h-screen flex items-center justify-center">
+<div class="h-full flex items-center justify-center py-14">
     <div class="bg-white rounded-lg shadow-lg overflow-hidden w-full max-w-sm lg:max-w-4xl">
         <div class="lg:flex">
             <div class="lg:w-1/2 bg-cover bg-center hidden lg:block"

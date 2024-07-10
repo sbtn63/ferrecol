@@ -6,10 +6,10 @@ use App\Http\Controllers\PostController;
 use App\Http\Controllers\CommentController;
 use App\Http\Controllers\UserController;
 
-/* Route::view('/', 'welcome'); */
+Route::view('/', 'welcome');
 
-Route::get('/', [AuthController::class, 'login'])->name('login');
-Route::post('/', [AuthController::class, 'auth'])->name('auth');
+Route::get('/login', [AuthController::class, 'login'])->name('login');
+Route::post('/login', [AuthController::class, 'auth'])->name('auth');
 Route::get('/register', [AuthController::class, 'create'])->name('create');
 Route::post('/register', [AuthController::class, 'register'])->name('register');
 

@@ -2,6 +2,12 @@
 
 @section('title', 'Registro')
 
+@section('navbar')
+
+@include('layouts._partials.navbar')
+
+@endsection
+
 @section('content')
 
 <div class="absolute mt-2 right-0 mr-6">
