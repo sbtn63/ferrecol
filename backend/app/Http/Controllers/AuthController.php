@@ -49,6 +49,6 @@ class AuthController extends Controller
     public function destroy(Request $request)
     {
         Auth::guard('web')->logout();
-        return redirect()->route('login');
+        return redirect()->route('welcome');
     }
 }
