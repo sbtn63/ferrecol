@@ -16,7 +16,7 @@
             <header class="mt-10">
                 <h1 class="text-4xl lg:text-4xl font-bold">Bienvenido a <span class="text-green-700">FerreCol</span></h1>
                 <div class="w-20 h-2 bg-green-700 my-4"></div>
-                <p class="text-xl mb-10 dark:text-white">Explora, comparte y conéctate con entusiastas del sistema ferroviario colombiano a través de la API de la Red Social Ferroviaria Fercol. Nuestra plataforma permite a los usuarios crear y compartir publicaciones, interactuar con la comunidad y mantenerse actualizado sobre las últimas noticias y eventos relacionados con la red ferroviaria en Colombia.</p>
+                <p class="text-xl mb-10 dark:text-white">Explora, comparte y conéctate con entusiastas del sistema ferroviario colombiano a través de la API de la Red Social Ferroviaria FerreCol. Nuestra plataforma permite a los usuarios crear y compartir publicaciones, interactuar con la comunidad y mantenerse actualizado sobre las últimas noticias y eventos relacionados con la red ferroviaria en Colombia.</p>
                 <a href="https://ferrecol-1.onrender.com/docs" class="bg-green-500 text-white text-2xl font-medium px-4 py-2 rounded shadow">Explorar API</a>
             </header>
         </div>
