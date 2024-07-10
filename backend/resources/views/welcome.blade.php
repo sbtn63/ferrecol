@@ -49,7 +49,7 @@
 
         async function getMunicipalities() {
             try {
-                const response = await fetch('http://127.0.0.1:8000/api/municipality/');
+                const response = await fetch('api/municipality/');
                 if (!response.ok) {
                     throw new Error('Error en la solicitud HTTP: ' + response.status);
                 }
