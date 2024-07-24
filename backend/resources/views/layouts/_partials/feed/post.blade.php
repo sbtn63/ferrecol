@@ -41,7 +41,7 @@
 
     <div class="mb-4 md:flex md:gap-4">
         <!-- Imagen -->
-         @if (!empty($post->file_url))
+         @if ($post->file_url && file_exists(public_path('images/' . $post->file_url)))
             <img class="w-full md:w-48 h-auto rounded-lg object-cover" src="{{ asset('images/'.$post->file_url) }}" alt="{{ $post->title }}">
          @endif
     
