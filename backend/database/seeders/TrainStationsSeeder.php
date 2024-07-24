@@ -31,12 +31,6 @@ class TrainStationsSeeder extends Seeder
                 'updated_at' => now()
             ],
             [
-                'name' => 'Estación de Zipaquirá',
-                'municipality_id' => 2, // Zipaquira
-                'created_at' => now(),
-                'updated_at' => now()
-            ],
-            [
                 'name' => 'Estación de Cajicá',
                 'municipality_id' => 4, // Cajicá
                 'created_at' => now(),

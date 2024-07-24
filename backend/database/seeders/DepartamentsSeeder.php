@@ -13,6 +13,12 @@ class DepartamentsSeeder extends Seeder
      */
     public function run(): void
     {
-        Departament::factory()->count(2)->create();
+        $departaments = [
+            ['name' => 'Boyaca'],
+            ['name' => 'Cundinamarca']
+        ];
+
+        Departament::insert($departaments);
+        //Departament::factory()->count(2)->create();
     }
 }

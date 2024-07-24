@@ -11,7 +11,7 @@ class CommentController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'content' => 'required|min:3|max:50',
+            'content' => 'required|min:3|max:100',
             'post' => 'required|int|exists:posts,id'
         ]);
 

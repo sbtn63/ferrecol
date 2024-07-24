@@ -13,17 +13,10 @@ class MunicipalitiesSeeder extends Seeder
      */
     public function run(): void
     {
-        /* Municipality::create([
-            'name' => 'Tunja',
-            'departament_id' => 1
-        ]);
-
-        Municipality::create([
-            'name' => 'Zipaquira',
-            'departament_id' => 2
-        ]); */
 
         $municipalities = [
+            ['name' => 'Tunja', 'departament_id' => 1],
+            ['name' => 'Zipaquira', 'departament_id' => 2],
             ['name' => 'Bogotá', 'departament_id' => 2],
             ['name' => 'Cajicá', 'departament_id' => 2],
             ['name' => 'Chía', 'departament_id' => 2],
